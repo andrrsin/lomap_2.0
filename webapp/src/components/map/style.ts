@@ -4,7 +4,28 @@ const style =  [
         "elementType": "all",
         "stylers": [
             {
-                "visibility": "on"
+                "color": "#ff7000"
+            },
+            {
+                "lightness": "69"
+            },
+            {
+                "saturation": "100"
+            },
+            {
+                "weight": "1.17"
+            },
+            {
+                "gamma": "2.04"
+            }
+        ]
+    },
+    {
+        "featureType": "all",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "color": "#cb8536"
             }
         ]
     },
@@ -13,10 +34,13 @@ const style =  [
         "elementType": "labels",
         "stylers": [
             {
-                "visibility": "off"
+                "color": "#ffb471"
             },
             {
-                "saturation": "-100"
+                "lightness": "66"
+            },
+            {
+                "saturation": "100"
             }
         ]
     },
@@ -25,16 +49,10 @@ const style =  [
         "elementType": "labels.text.fill",
         "stylers": [
             {
-                "saturation": 36
+                "gamma": 0.01
             },
             {
-                "color": "#000000"
-            },
-            {
-                "lightness": 40
-            },
-            {
-                "visibility": "off"
+                "lightness": 20
             }
         ]
     },
@@ -43,13 +61,16 @@ const style =  [
         "elementType": "labels.text.stroke",
         "stylers": [
             {
-                "visibility": "off"
+                "saturation": -31
             },
             {
-                "color": "#000000"
+                "lightness": -33
             },
             {
-                "lightness": 16
+                "weight": 2
+            },
+            {
+                "gamma": 0.8
             }
         ]
     },
@@ -63,29 +84,20 @@ const style =  [
         ]
     },
     {
-        "featureType": "administrative",
-        "elementType": "geometry.fill",
+        "featureType": "landscape",
+        "elementType": "all",
         "stylers": [
             {
-                "color": "#000000"
+                "lightness": "-8"
             },
             {
-                "lightness": 20
-            }
-        ]
-    },
-    {
-        "featureType": "administrative",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#000000"
+                "gamma": "0.98"
             },
             {
-                "lightness": 17
+                "weight": "2.45"
             },
             {
-                "weight": 1.2
+                "saturation": "26"
             }
         ]
     },
@@ -94,37 +106,10 @@ const style =  [
         "elementType": "geometry",
         "stylers": [
             {
-                "color": "#000000"
+                "lightness": 30
             },
             {
-                "lightness": 20
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#4d6059"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#4d6059"
-            }
-        ]
-    },
-    {
-        "featureType": "landscape.natural",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#4d6059"
+                "saturation": 30
             }
         ]
     },
@@ -133,25 +118,19 @@ const style =  [
         "elementType": "geometry",
         "stylers": [
             {
-                "lightness": 21
+                "saturation": 20
             }
         ]
     },
     {
-        "featureType": "poi",
-        "elementType": "geometry.fill",
+        "featureType": "poi.park",
+        "elementType": "geometry",
         "stylers": [
             {
-                "color": "#4d6059"
-            }
-        ]
-    },
-    {
-        "featureType": "poi",
-        "elementType": "geometry.stroke",
-        "stylers": [
+                "lightness": 20
+            },
             {
-                "color": "#4d6059"
+                "saturation": -20
             }
         ]
     },
@@ -160,118 +139,22 @@ const style =  [
         "elementType": "geometry",
         "stylers": [
             {
-                "visibility": "on"
+                "lightness": 10
             },
             {
-                "color": "#7f8d89"
+                "saturation": -30
             }
         ]
     },
     {
         "featureType": "road",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            },
-            {
-                "lightness": 17
-            }
-        ]
-    },
-    {
-        "featureType": "road.highway",
         "elementType": "geometry.stroke",
         "stylers": [
             {
-                "color": "#7f8d89"
+                "saturation": 25
             },
             {
-                "lightness": 29
-            },
-            {
-                "weight": 0.2
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 18
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "road.arterial",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "road.local",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 16
-            }
-        ]
-    },
-    {
-        "featureType": "road.local",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "road.local",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#7f8d89"
-            }
-        ]
-    },
-    {
-        "featureType": "transit",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "color": "#000000"
-            },
-            {
-                "lightness": 19
+                "lightness": 25
             }
         ]
     },
@@ -280,88 +163,14 @@ const style =  [
         "elementType": "all",
         "stylers": [
             {
-                "color": "#2b3638"
+                "lightness": -20
             },
             {
-                "visibility": "on"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "geometry",
-        "stylers": [
-            {
-                "color": "#2b3638"
-            },
-            {
-                "lightness": 17
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "geometry.fill",
-        "stylers": [
-            {
-                "color": "#24282b"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "geometry.stroke",
-        "stylers": [
-            {
-                "color": "#24282b"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text.fill",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.text.stroke",
-        "stylers": [
-            {
-                "visibility": "off"
-            }
-        ]
-    },
-    {
-        "featureType": "water",
-        "elementType": "labels.icon",
-        "stylers": [
-            {
-                "visibility": "off"
+                "color": "#ecc080"
             }
         ]
     }
-];
+]   
+;
   
   export default style;
