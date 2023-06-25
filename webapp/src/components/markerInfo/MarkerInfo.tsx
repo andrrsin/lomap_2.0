@@ -12,7 +12,7 @@ export default function MarkerInfo(props: {marker: Marker}): JSX.Element {
         <img src={marker.image} alt={marker.name} />
         <p>{marker.reviews}</p>
         <p>{marker.ratings}</p>
-       
+        <p>{marker.category}</p>
         </div>
     );
     }

@@ -2,7 +2,10 @@ import {style} from './style';
 
 export const containerStyle = {
   width: '100%',
-  height: '100vh'
+  height: '100vh',
+  display: 'grid',
+  gridTemplateColumns: '1fr 300px', // Adjust the width of the form as needed
+  gap: '20px'
 };
 
 // Center on Kalmar
