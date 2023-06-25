@@ -1,4 +1,4 @@
-import mapStyles from './style';
+import {style} from './style';
 
 export const containerStyle = {
   width: '100%',
@@ -13,7 +13,7 @@ export const center = {
 
 // Disable default UI
 export const options = {
-  styles: mapStyles,
+  styles: style,
   disableDefaultUI: true,
   zoomControl: true
 };

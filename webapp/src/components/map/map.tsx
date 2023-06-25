@@ -1,51 +1,97 @@
-import { GoogleMap, Marker, InfoWindow, useJsApiLoader } from '@react-google-maps/api';
-import React, { useState } from 'react';
-import { containerStyle, options, center } from './settings';
-import { useEffect } from 'react';
+import React from 'react';
+import { useState } from 'react';
+import { GoogleMap, LoadScript, Marker as GoogleMarker, InfoWindow} from '@react-google-maps/api';
+import {options, center,containerStyle} from "./settings";
+import MarkerForm  from '../markerForm/MarkerForm';
+import {Marker} from"../../utils/marker";
+import { style } from './style';
+import MarkerInfo from '../markerInfo/MarkerInfo';
 
-export const Map = () => {
-    const { isLoaded } = useJsApiLoader({ id: 'google-map-script', googleMapsApiKey: "AIzaSyAm4-Y9DXFycCPlBGSfENndiTKtmBKz-GQ" })
-    //save map in ref
-    const mapRef = React.useRef<google.maps.Map>(new google.maps.Map(document.createElement('div')));
-    const onLoad = (map: google.maps.Map): void => { mapRef.current = map };
-    const unMount = (): void => { mapRef.current = new google.maps.Map(document.createElement('div')) };
-    const [origin,setOrigin] = useState<google.maps.LatLngLiteral>({ lat: 0, lng: 0 });
-    useEffect(() => {
-        // get the user's current location
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(position => {
-                const { latitude, longitude } = position.coords;
-                setOrigin({ lat: latitude, lng: longitude });
-            });
-        }else{
-            setOrigin(center);
+// lat: event.latLng?.lat()?event.latLng?.lat():0,
+// lng: event.latLng?.lng()?event.latLng?.lng():0
+const GoogleMapComponent: React.FC = () => {
+    const [marker, setMarker] = useState<Marker | null>(null);
+    const [markers, setMarkers] = useState<Marker[]>([]);
+    const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
+  
+    const handleMapClick = (event: google.maps.MapMouseEvent) => {
+      const clickedMarker: Marker = {
+        name: '',
+        description: '',
+        image: '',
+        reviews: '',
+        ratings: 0,
+        position: {
+            lat: event.latLng?.lat()?event.latLng?.lat():0,
+          lng: event.latLng?.lng()?event.latLng?.lng():0
         }
-    }, []);
-    
-    let markerOptions= {
-        position:new google.maps.LatLng(origin.lat,origin.lng),
-        map:mapRef.current,
-    }
-    let marker = new google.maps.Marker(markerOptions);
-    marker.addListener("click", (e:google.maps.MapMouseEvent) => {
-        mapRef.current.setZoom(8);
-        mapRef.current.setCenter(marker.getPosition() as google.maps.LatLng);
-      });
-    mapRef.current.addListener("click", (e:google.maps.MapMouseEvent) => {
-        document.getElementById("lat")!.innerHTML = e.latLng?.lat().toString()||"";
-      });
-      
-    if (!isLoaded) return <div>Loading...</div>;
-    return (
+      };
+      setMarker(clickedMarker);
+    };
+  
+    const handleMarkerFormSubmit = (markerData: Marker) => {
+        if (marker) {
+          const updatedMarker: Marker = {
+            ...marker,
+            name: markerData.name,
+            description: markerData.description,
+            image: markerData.image,
+            reviews: markerData.reviews,
+            ratings: markerData.ratings
+          };
+          setMarkers(prevMarkers => [...prevMarkers, updatedMarker]);
+        }
+        setMarker(null);
+      };
+    const handleMarkerFormCancel = () => {
+      setMarker(null);
+    };
+  
+    const handleMarkerClick = (marker: Marker) => {
+      setSelectedMarker(marker);
+    };
+  
+    const handleCloseInfoWindow = () => {
+      setSelectedMarker(null);
+    };
+  return (
+    <LoadScript googleMapsApiKey="AIzaSyAm4-Y9DXFycCPlBGSfENndiTKtmBKz-GQ">
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        center={center}
+        zoom={10}
+        options={options}
+        onClick={handleMapClick}
+      >
+       {marker && <GoogleMarker position={marker.position} />}
+        {markers.map(markerData => (
+          <GoogleMarker
+            key={`${markerData.position.lat}-${markerData.position.lng}`}
+            position={markerData.position}
+            onClick={() => handleMarkerClick(markerData)}
+          />
+        ))}
+        {selectedMarker && (
+          <InfoWindow
+            position={selectedMarker.position}
+            onCloseClick={handleCloseInfoWindow}
+          >
+            <MarkerInfo
+              marker={selectedMarker}
+            />
+          </InfoWindow>
+        )}
+      </GoogleMap>
+      {marker && (
+        <MarkerForm
+          onSubmit={handleMarkerFormSubmit}
+          onCancel={handleMarkerFormCancel}
+          initialMarker={marker}
+        />
+      )}
 
-        <div className="mapWrapper">
-            <GoogleMap mapContainerStyle={containerStyle} options={options as google.maps.MapOptions} center={origin} zoom={13} onLoad={onLoad} onUnmount={unMount} />
-            <div className="lat">
+    </LoadScript>
+  );
+};
 
-            </div>
-        </div>
-    );
-
-}
-
-export default Map;
+export default GoogleMapComponent;
