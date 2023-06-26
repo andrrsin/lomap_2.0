@@ -20,7 +20,7 @@ const GoogleMapComponent: React.FC = () => {
     const [markers, setMarkers] = useState<Marker[]>([]);
     const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
+    const [filteredMarkers, setFilteredMarkers] = useState<Marker[]>([]);
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
         const clickedMarker: Marker = {
             name: '',
@@ -28,7 +28,7 @@ const GoogleMapComponent: React.FC = () => {
             image: '',
             reviews: '',
             ratings: 0,
-            category: '',
+            category: selectedCategories[0] || '',
             position: {
                 lat: event.latLng?.lat() ? event.latLng?.lat() : 0,
                 lng: event.latLng?.lng() ? event.latLng?.lng() : 0
@@ -45,7 +45,8 @@ const GoogleMapComponent: React.FC = () => {
                 description: markerData.description,
                 image: markerData.image,
                 reviews: markerData.reviews,
-                ratings: markerData.ratings
+                ratings: markerData.ratings,
+                category: markerData.category
             };
             setMarkers(prevMarkers => [...prevMarkers, updatedMarker]);
         }
@@ -66,11 +67,18 @@ const GoogleMapComponent: React.FC = () => {
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
         setSelectedCategories(selectedOptions);
+
     };
 
-    const filteredMarkers = selectedCategories.length > 0
-        ? markers.filter(marker => selectedCategories.includes(marker.category))
-        : markers;
+    const handleFilters = () => {
+        console.log(selectedCategories);
+        setFilteredMarkers(selectedCategories.length > 0
+            ? markers.filter(marker => selectedCategories.includes(marker.category))
+            : markers);
+    };
+
+
+
     return (
         <LoadScript googleMapsApiKey="AIzaSyAm4-Y9DXFycCPlBGSfENndiTKtmBKz-GQ">
             <div>
@@ -83,6 +91,18 @@ const GoogleMapComponent: React.FC = () => {
                         <option value="Shop">Shop</option>
                         <option value="Other">Other</option>
                     </select>
+                    <button type="button" onClick={handleFilters}>
+                        Filter
+                    </button>
+                    <div>
+                        {markers.map(marker => (
+                            <div>
+                                {marker.position.lat + marker.position.lng}
+                                {marker.category}
+                            </div>
+                        ))}
+                        {selectedCategories}
+                    </div>
                 </div>
                 <div style={containerStyle}>
                     <GoogleMap
@@ -100,16 +120,16 @@ const GoogleMapComponent: React.FC = () => {
                                 onClick={() => handleMarkerClick(marker)}
                             />
                         ))}
-                        { selectedMarker && (
-                                <InfoWindow
-                                    position={selectedMarker.position}
-                                    onCloseClick={handleCloseInfoWindow}
-                                >
-                                    <MarkerInfo
-                                        marker={selectedMarker}
-                                    />
-                                </InfoWindow>
-                            )}
+                        {selectedMarker && (
+                            <InfoWindow
+                                position={selectedMarker.position}
+                                onCloseClick={handleCloseInfoWindow}
+                            >
+                                <MarkerInfo
+                                    marker={selectedMarker}
+                                />
+                            </InfoWindow>
+                        )}
                     </GoogleMap>
                     {marker && (
                         <MarkerForm
