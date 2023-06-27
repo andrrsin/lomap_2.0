@@ -2,7 +2,7 @@ export interface Marker {
     name: string;
     description: string;
     image: string;
-    reviews: string;
+    reviews: string[];
     ratings: number;
     category: string;
     position: {

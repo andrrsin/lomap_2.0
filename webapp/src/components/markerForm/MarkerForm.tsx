@@ -12,13 +12,18 @@ interface MarkerFormProps {
 const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, onCancel, initialMarker }) => {
     const [marker, setMarker] = useState<Marker>(initialMarker);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
         setMarker(prevMarker => ({ ...prevMarker, [name]: value }));
     };
 
+   
+
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
+        if(marker.category===''){
+            marker.category='Other';
+        }
         onSubmit(marker);
         setMarker(initialMarker);
     };
@@ -37,35 +42,22 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, onCancel, initialMark
             <br />
             <label>
                 Description:
-                <textarea name="description" value={marker.description} onChange={handleChange} required />
+                <textarea name="description" value={marker.description} onChange={handleChange} />
             </label>
             <br />
             <label>
                 Image:
-                <input type="text" name="image" value={marker.image} onChange={handleChange} required />
+                <input type="text" name="image" value={marker.image} onChange={handleChange} />
             </label>
             <br />
-            <label>
-                Reviews:
-                <textarea name="reviews" value={marker.reviews} onChange={handleChange} required />
-            </label>
-            <br />
-            <label>
-                Ratings:
-                <input
-                    type="number"
-                    name="ratings"
-                    value={marker.ratings}
-                    onChange={handleChange}
-                    required
-                    min={0}
-                    max={5}
-                />
-            </label>
-            <br />
+        
+            
+      
 
             <label htmlFor="category">Category:</label>
-            <select id="category" name="category" defaultValue={marker.category}>
+            <select id="category" name="category" defaultValue="Other" onChange={handleChange}>
+                {/* Tengo que arreglar onChange */}
+                
                 <option value="Restaurant">Restaurant</option>
                 <option value="Park">Park</option>
                 <option value="Pub">Pub</option>
@@ -75,7 +67,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, onCancel, initialMark
             </select>
             <br />
             <button type="submit">Add Marker</button>
-            <button type="button" onClick={handleCancel}>Cancel</button> {/* Cancel button */}
+            {/* <button type="button" onClick={handleCancel}>Cancel</button>  */}
         </form>
     );
 };

@@ -26,9 +26,9 @@ const GoogleMapComponent: React.FC = () => {
             name: '',
             description: '',
             image: '',
-            reviews: '',
+            reviews: [''],
             ratings: 0,
-            category: selectedCategories[0] || '',
+            category: '',
             position: {
                 lat: event.latLng?.lat() ? event.latLng?.lat() : 0,
                 lng: event.latLng?.lng() ? event.latLng?.lng() : 0
@@ -64,6 +64,9 @@ const GoogleMapComponent: React.FC = () => {
         setSelectedMarker(null);
     };
 
+    const handleCloseForm = () => {
+        setMarker(null);
+    };
     const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const selectedOptions = Array.from(event.target.selectedOptions, option => option.value);
         setSelectedCategories(selectedOptions);
@@ -78,6 +81,25 @@ const GoogleMapComponent: React.FC = () => {
     };
 
 
+    const handleAddReview = (review: string):Marker|void => {
+        console.log(review);
+        if (selectedMarker) {
+        
+          const updatedMarker: Marker = {
+            ...selectedMarker,
+            reviews: [...selectedMarker.reviews, review],
+          };
+          console.log(markers.indexOf(selectedMarker));
+          markers[markers.indexOf(selectedMarker)] = updatedMarker;
+          console.log(updatedMarker);
+          setMarker(updatedMarker);
+          return updatedMarker;
+        }
+
+      };
+
+    const logout = () => {
+    };
 
     return (
         <LoadScript googleMapsApiKey="AIzaSyAm4-Y9DXFycCPlBGSfENndiTKtmBKz-GQ">
@@ -93,6 +115,9 @@ const GoogleMapComponent: React.FC = () => {
                     </select>
                     <button type="button" onClick={handleFilters}>
                         Filter
+                    </button>
+                    <button type="button" onClick={logout}>
+                        Logout
                     </button>
                     <div>
                         {markers.map(marker => (
@@ -127,17 +152,23 @@ const GoogleMapComponent: React.FC = () => {
                             >
                                 <MarkerInfo
                                     marker={selectedMarker}
+                                    onAddReview={handleAddReview}
                                 />
                             </InfoWindow>
                         )}
-                    </GoogleMap>
-                    {marker && (
+                        {marker && (
+                        <InfoWindow
+                            position={marker.position}
+                            onCloseClick={handleCloseForm}>
                         <MarkerForm
                             onSubmit={handleMarkerFormSubmit}
                             onCancel={handleMarkerFormCancel}
                             initialMarker={marker}
                         />
+                        </InfoWindow>
                     )}
+                    </GoogleMap>
+                    
                 </div>
             </div>
         </LoadScript>
