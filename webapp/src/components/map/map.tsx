@@ -8,6 +8,11 @@ import { style } from './style';
 import MarkerInfo from '../markerInfo/MarkerInfo';
 import Friends from '../friends/friends';
 import "./map.css";
+
+import Tooltip from "@mui/material/Tooltip"
+
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+
 // lat: event.latLng?.lat()?event.latLng?.lat():0,
 // lng: event.latLng?.lng()?event.latLng?.lng():0
 
@@ -20,10 +25,9 @@ const GoogleMapComponent: React.FC = () => {
     const [marker, setMarker] = useState<Marker | null>(null);
     const [markers, setMarkers] = useState<Marker[]>([]);
     const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
-    const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedCategories, setSelectedCategories] = useState<string[]>(["Restaurant", "Park", "Pub", "Museum", "Shop", "Other"]);
     const [filteredMarkers, setFilteredMarkers] = useState<Marker[]>([]);
-    const [filterOpen, setFilterOpen] = useState(false);
-    const [friendsOpen, setFriendsOpen] = useState(false);
+
     const [profileOpen, setProfileOpen] = useState(false);
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
@@ -31,7 +35,7 @@ const GoogleMapComponent: React.FC = () => {
             name: '',
             description: '',
             image: '',
-            reviews: [''],
+            reviews: [],
             ratings: 0,
             category: '',
             position: {
@@ -56,6 +60,9 @@ const GoogleMapComponent: React.FC = () => {
             setMarkers(prevMarkers => [...prevMarkers, updatedMarker]);
         }
         setMarker(null);
+        const temp  = filteredMarkers;
+        setFilteredMarkers([]);
+        setFilteredMarkers(temp);
     };
     const handleMarkerFormCancel = () => {
         setMarker(null);
@@ -67,6 +74,9 @@ const GoogleMapComponent: React.FC = () => {
 
     const handleCloseInfoWindow = () => {
         setSelectedMarker(null);
+        const temp  = filteredMarkers;
+        setFilteredMarkers([]);
+        setFilteredMarkers(temp);
     };
 
     const handleCloseForm = () => {
@@ -91,37 +101,35 @@ const GoogleMapComponent: React.FC = () => {
     };
 
 
-    const handleAddReview = (review: string,rating:number): Marker | void => {
-        
-        
+    const handleAddReview = (review: string, rating: number): Marker | void => {
         if (selectedMarker) {
             
-            const newrate = selectedMarker.ratings === 0? rating:(selectedMarker.ratings+rating)/2;
+            const updatedReviews = [...selectedMarker.reviews, review];
+            const updatedRatings =
+                (selectedMarker.ratings * selectedMarker.reviews.length + rating) /
+                (selectedMarker.reviews.length + 1);
+
             const updatedMarker: Marker = {
                 ...selectedMarker,
-                reviews: [...selectedMarker.reviews, review],
-                ratings:newrate
+                reviews: updatedReviews,
+                ratings: updatedRatings,
             };
 
-            markers[markers.indexOf(selectedMarker)] = updatedMarker;
-            
-            setMarker(updatedMarker);
+            const updatedMarkers = markers.map((marker) =>
+                marker === selectedMarker ? updatedMarker : marker
+            );
+
+            setMarkers(updatedMarkers);
+            setSelectedMarker(updatedMarker);
             console.log(markers);
             return updatedMarker;
         }
-
     };
+
 
     const logout = () => {
     };
 
-    const handleFilterToggle = () => {
-        setFilterOpen(!filterOpen);
-    };
-
-    const handleFriendsToggle = () => {
-        setFriendsOpen(!friendsOpen);
-    };
 
     const handleProfileToggle = () => {
         setProfileOpen(!profileOpen);
@@ -171,40 +179,38 @@ const GoogleMapComponent: React.FC = () => {
 
 
                     {/* FILTERS POPUP */}
-                    {filterOpen && (
-                        <div className="floating-div filter-div">
-                            <h3 className="filter-title">Filter</h3>
-                            <div className="filter-select-wrapper">
-                                <select className="filter-select" multiple value={selectedCategories} onChange={handleCategoryChange}>
-                                    <option value="Restaurant">Restaurant</option>
-                                    <option value="Park">Park</option>
-                                    <option value="Pub">Pub</option>
-                                    <option value="Museum">Museum</option>
-                                    <option value="Shop">Shop</option>
-                                    <option value="Other">Other</option>
-                                </select>
-                                <div className="filter-select-icon">&#9662;</div>
-                            </div>
-                            <div className="filter-button-group">
-                                <button className="filter-button" onClick={handleFilters}>
-                                    Apply
-                                </button>
-                                <button className="filter-button" onClick={clearFilters}>
-                                    Clear
-                                </button>
-                            </div>
+
+                    <div className="floating-div filter-div">
+                        <h3 className="filter-title">Filter</h3>
+                        <div className="filter-select-wrapper">
+                            <select className="filter-select" multiple value={selectedCategories} onChange={handleCategoryChange}>
+                                <option value="Restaurant">Restaurant</option>
+                                <option value="Park">Park</option>
+                                <option value="Pub">Pub</option>
+                                <option value="Museum">Museum</option>
+                                <option value="Shop">Shop</option>
+                                <option value="Other">Other</option>
+                            </select>
+                            <div className="filter-select-icon">&#9662;</div>
                         </div>
-                    )}
+                        <div className="filter-button-group">
+                            <button className="filter-button" onClick={handleFilters}>
+                                Apply
+                            </button>
+                            <button className="filter-button" onClick={clearFilters}>
+                                Clear
+                            </button>
+                        </div>
+                    </div>
+
 
 
 
 
                     {/* FRIENDS POPUP */}
-                    {friendsOpen && (<div className="floating-div friends-div"
-                        
-                    >
+                    <div className="floating-div friends-div">
                         <Friends />
-                    </div>)}
+                    </div>
 
                     {profileOpen && (
                         <div className="floating-div profile-div"
@@ -229,31 +235,40 @@ const GoogleMapComponent: React.FC = () => {
                         </div>
                     )}
 
+
                     <button
                         className='button'
                         style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}
-                        onClick={handleFilterToggle}
-                    >
-                        {filterOpen ? 'Close Filter' : 'Open Filter'}
-                    </button>
-                    <button
-                        className='button'
-                        style={{ position: 'absolute', top: 10, left: 100, zIndex: 1 }}
-                        onClick={handleFriendsToggle}>{friendsOpen ? 'Close Friends' : 'Open Friends'}</button>
-                    <button
-                        className='button'
-                        style={{ position: 'absolute', top: 10, left: 205, zIndex: 1 }}
                         onClick={handleProfileToggle}
                     >
                         {profileOpen ? 'Close Profile' : 'Open Profile'}
                     </button>
                     <button
                         className='button'
-                        style={{ position: 'absolute', top: 10, left: 302, zIndex: 1 }}
+                        style={{ position: 'absolute', top: 10, left: 105, zIndex: 1 }}
                         onClick={logout}
                     >
                         Logout
                     </button>
+                    <Tooltip leaveDelay={200} enterDelay={200}
+                    title="1. Click on the map to create a marker
+                    2. Click on a marker to read info and make reviews
+                    3. You can add friends and filter with the right bar
+                    4. You can see your current level on the profile"
+                    
+                    >
+                    <button
+                        className='button'
+                        style={{ position: 'absolute', top: 10, left: 170, zIndex: 1,height:31}}
+                       
+                    >   
+                        
+                        <HelpOutlineOutlinedIcon /> {/* Use the FaQuestion icon from react-icons */}
+                        
+                    </button>
+                    </Tooltip>
+                     {/* Define the tooltip with the same identifier */}
+
                 </GoogleMap>
 
             </div>

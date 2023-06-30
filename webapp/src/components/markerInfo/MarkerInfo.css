@@ -1,0 +1,119 @@
+.marker-details {
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  .marker-details h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .marker-details p {
+    margin-bottom: 8px;
+    font-weight: bold;
+  }
+  
+  .marker-details img {
+    width: 100%;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+  }
+  
+  .review-section {
+    margin-top: 20px;
+  }
+  
+  .review-section input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  
+  .rating-section {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  
+  .rating-section label {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    margin-right: 5px;
+  }
+  
+  .rating-section input[type="radio"] {
+    display: none;
+  }
+  
+  .rating-section .star:before {
+    content: "★";
+    font-size: 24px;
+    color: #ccc;
+  }
+  
+  .rating-section input[type="radio"]:checked ~ .star:before {
+    color: #ffcc00;
+  }
+  
+  .button2 {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .button2:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Additional styles for spacing and positioning */
+  .marker-details p:last-child {
+    margin-bottom: 0;
+  }
+  
+  .marker-details .rating-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .star2 {
+    content: "★";
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-color: #ccc;
+    margin-right: 4px;
+  }
+  
+  .star2.filled {
+    background-color: #5db323;
+  }
+  
+  .review {
+    margin-bottom: 5px;
+  }
+
+  .reviewsWrapper{
+    max-height: 150px;
+    overflow-y: auto;
+  }
+
+  .reviewsWrapper::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  .reviewsWrapper::-webkit-scrollbar-track {
+    background-color: #f2f2f2;
+  }
+  
+  .reviewsWrapper::-webkit-scrollbar-thumb {
+    background-color: #888888;
+    border-radius: 4px;
+  }

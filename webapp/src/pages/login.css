@@ -1,0 +1,38 @@
+
+
+.loginHeader {
+    color: purple;
+    text-align: center;
+    font-weight: bold;
+    font-size: 5em;
+}
+.wrapper{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 14%;
+    left: 14%;
+    background-color: #29446b;
+    flex: 1;
+    flex-direction: row;
+    border-radius: 8px;
+
+}
+
+.rightPart{
+    flex: 1;
+
+    padding: 10px;
+    margin: 10px;
+    border-radius: 10px;
+
+}
+.loginText {
+    font-size: 1.1em;
+    color: white;
+}
+
+.loginInput {
+    color: white;
+}

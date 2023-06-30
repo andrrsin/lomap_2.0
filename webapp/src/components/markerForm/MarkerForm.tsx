@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Marker } from '../../utils/marker';
-
+import './markerForm.css';
 interface MarkerFormProps {
     onSubmit: (marker: Marker) => void;
     onCancel: () => void; // New prop for cancel action
@@ -12,52 +12,62 @@ interface MarkerFormProps {
 const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, onCancel, initialMarker }) => {
     const [marker, setMarker] = useState<Marker>(initialMarker);
 
+
+    const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setSelectedImage(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+      handleChange(e);
+    }
+  };
     const handleChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = event.target;
         setMarker(prevMarker => ({ ...prevMarker, [name]: value }));
     };
 
-   
+
 
     const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
-        if(marker.category===''){
-            marker.category='Other';
+        if (marker.category === '') {
+            marker.category = 'Other';
         }
         onSubmit(marker);
         setMarker(initialMarker);
     };
 
-    const handleCancel = () => {
-        onCancel(); // Call the onCancel callback provided by the parent component
-        setMarker(initialMarker);
-    };
-
+ 
     return (
-        <form onSubmit={handleSubmit}>
-            <label>
+        <form onSubmit={handleSubmit} className="form">
+            <label className='form-label'>
                 Name:
-                <input type="text" name="name" value={marker.name} onChange={handleChange} required />
+                <input className='form-input' type="text" name="name" value={marker.name} onChange={handleChange} required />
             </label>
             <br />
-            <label>
+            <label className='form-label'>
                 Description:
-                <textarea name="description" value={marker.description} onChange={handleChange} />
+                <textarea className="form-textarea" name="description" value={marker.description} onChange={handleChange} />
             </label>
             <br />
-            <label>
+            <label className='form-label'>
                 Image:
-                <input type="text" name="image" value={marker.image} onChange={handleChange} />
+                <input className='form-file' accept=".jpg, .png" type="file" name="image" value={marker.image} onChange={handleImageChange } />
+                {selectedImage && (
+                    <div className="image-preview">
+                        <img src={selectedImage} alt="Preview" />
+                    </div>
+                )}
             </label>
             <br />
-        
-            
-      
-
-            <label htmlFor="category">Category:</label>
-            <select id="category" name="category" defaultValue="Other" onChange={handleChange}>
-                {/* Tengo que arreglar onChange */}
-                
+            <label className='form-label' htmlFor="category">Category:</label>
+            <select className="form-select" id="category" name="category" defaultValue="Other" onChange={handleChange}>
                 <option value="Restaurant">Restaurant</option>
                 <option value="Park">Park</option>
                 <option value="Pub">Pub</option>
@@ -66,8 +76,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, onCancel, initialMark
                 <option value="Other">Other</option>
             </select>
             <br />
-            <button type="submit">Add Marker</button>
-            {/* <button type="button" onClick={handleCancel}>Cancel</button>  */}
+            <button className="form-button" type="submit">Add Marker</button>
         </form>
     );
 };
