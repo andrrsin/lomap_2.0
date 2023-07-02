@@ -16,12 +16,11 @@ jobs:
       with:
         node-version: 18
     - run: npm --prefix webapp ci
-    - run: npm --prefix restapi ci
     - run: npm --prefix webapp test --coverage --watchAll
-    - run: npm --prefix restapi test --coverage --watchAll
 #    - run: npm --prefix webapp run test:e2e --coverage --watchAll
     - name: Analyze with SonarCloud
       uses: sonarsource/sonarcloud-github-action@master
       env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          GOOGLE_MAPS_API_KEY: ${{ secrets.GOOGLE_MAPS_API_KEY }}

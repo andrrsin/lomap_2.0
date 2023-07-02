@@ -1,0 +1,112 @@
+/* GoogleMapComponent.css */
+
+/* Floating Div Styles */
+.floating-div {
+    position: absolute;
+    background: #fff;
+    padding: 10px;
+    z-index: 1;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+  }
+  
+  /* Filter Div Styles */
+  .filter-div {
+    top: 50px;
+    right: 10px;
+    height: 270px;
+    width: 220px;
+  }
+  
+  .filter-title {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  
+  .filter-select-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .filter-select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    appearance: none;
+    border: none;
+    border-radius: 4px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    font-size: 16px;
+    height: 170px;
+    overflow: hidden;
+    outline: none;
+  }
+
+  .filter-select::-webkit-scrollbar {
+    display: none; /* Hide the scrollbar in webkit browsers */
+  }
+  
+  .filter-select-icon {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #888;
+  }
+  
+  .filter-button-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .filter-button {
+    flex: 1;
+    margin-right: 4px;
+    padding: 8px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .filter-button:last-child {
+    margin-right: 0;
+  }
+  
+  .filter-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Friends Div Styles */
+  .friends-div {
+    top: 350px;
+    right: 10px;
+    height: 450px;
+    width: 220px;
+  }
+  
+  
+
+  
+  /* Buttons Styles */
+.button {
+    position: absolute;
+    top: 10px;
+    z-index: 1;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  .button:hover {
+    background-color: #0056b3;
+  }

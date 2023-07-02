@@ -1,36 +1,38 @@
 import React, { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import Container from '@mui/material/Container';
-import EmailForm from './components/EmailForm';
-import Welcome from './components/Welcome';
-import UserList from './components/UserList';
-import  {getUsers} from './api/api';
-import {User} from './shared/shareddtypes';
 import './App.css';
+import GoogleMapComponent from './components/map/map';
+import {   createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Login from './pages/Login';
 
 function App(): JSX.Element {
 
-  const [users,setUsers] = useState<User[]>([]);
+  const ProtectedRoute = ({children}:any) => {
+    //Descomentar cuando funcione el inicio de sesión
+    // console.log(session.info);
+    // if (!session.info.isLoggedIn) {
+    //  return <Navigate to="/login" />;
+    // }
+    console.log("ProtectedRoute");
+    return children;
+  };
 
-  const refreshUserList = async () => {
-    setUsers(await getUsers());
-  }
+  const router = createBrowserRouter([
+    {
+      path: "/",
 
-  useEffect(()=>{
-    refreshUserList();
-  },[]);
-
+      element: (
+        <ProtectedRoute>
+      <GoogleMapComponent />
+      </ProtectedRoute>),
+    },
+    {
+      path: "/login",
+      element: <Login />,
+    }
+  ]);
   return (
-    <>
-      <Container maxWidth="sm">
-        <Welcome message="ASW students"/>
-        <Box component="div" sx={{ py: 2}}>This is a basic example of a React application using Typescript. You can add your email to the list filling the form below.</Box>
-        <EmailForm OnUserListChange={refreshUserList}/>        
-        <UserList users={users}/>
-        <Link href="https://github.com/arquisoft/lomap_0">Source code</Link>
-      </Container>
-    </>
+    <RouterProvider router={router} />
+   
   );
 }
 

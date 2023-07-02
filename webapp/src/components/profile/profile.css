@@ -1,0 +1,43 @@
+.profile-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  
+  .profile-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .profile-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+  }
+
+  .label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+  
+  .info {
+    margin-bottom: 10px;
+  }
+  
+  .progress-bar {
+    width: 100%;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #eee;
+  }
+  
+  .progress-bar::-webkit-progress-value {
+    background-color: #00aaff;
+    border-radius: 5px;
+  }
+  
+  
