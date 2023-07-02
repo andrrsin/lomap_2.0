@@ -25,9 +25,10 @@ const Login = () => {
             <img className="loginLogo" src="/Lomap.png"/>
             <div className="rightPart">
 
-            <p className="loginText"> BITS is an initiative by HappySW where Lompa is redesigned to turn into a game</p>
-            <p className="loginText"> As all HappySW we believe in privacy we use SOLID technologies, please log in with your account</p>
-            <p className="loginText"> If not, please create an account in one of the many providers</p>
+            <p className="loginText"> BITS is an initiative by HappySW where Lomap is converted to a game!</p>
+            <p className="loginText"> As all HappySW we believe in privacy we use SOLID technologies</p>
+            <p className="loginText"> Log in with your provider or create an account in one of them.</p>
+            <div className="distances"></div>
             <FormGroup className="loginInput">
                 <TextField className="loginInput"
                     label="Identity Provider"
@@ -35,7 +36,17 @@ const Login = () => {
                     type="url"
                     value={idp}
                     onChange={(e: any) => setIdp(e.target.value)}
+                    InputLabelProps={{
+                        style: {
+                          color: 'white',
+                        },
+                      }}
                     InputProps={{
+                        inputProps: {
+                            style: {
+                              color: 'white',
+                            },
+                          },
                         endAdornment: (
                             // <LoginButton oidcIssuer={idp}
                             //              redirectUrl="http://172.162.240.176:3000/main/"

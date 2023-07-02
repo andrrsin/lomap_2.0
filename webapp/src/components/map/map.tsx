@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import { GoogleMap, LoadScript, Marker as GoogleMarker, InfoWindow } from '@react-google-maps/api';
 import { options, center, containerStyle as mapStyle } from "./settings";
 import MarkerForm from '../markerForm/MarkerForm';
 import { Marker } from "../../utils/marker";
-import { style } from './style';
+
 import MarkerInfo from '../markerInfo/MarkerInfo';
 import Friends from '../friends/friends';
 import "./map.css";
-
+import { useSession } from "@inrupt/solid-ui-react";
 import Tooltip from "@mui/material/Tooltip"
-
+import { useNavigate } from "react-router-dom";
 import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+import Profile from '../profile/Profile';
+import { createLocation } from "../../utils/solid";
+import { getLocations, getFriendsID } from "../../utils/solid";
 
 // lat: event.latLng?.lat()?event.latLng?.lat():0,
 // lng: event.latLng?.lng()?event.latLng?.lng():0
@@ -27,17 +30,74 @@ const GoogleMapComponent: React.FC = () => {
     const [selectedMarker, setSelectedMarker] = useState<Marker | null>(null);
     const [selectedCategories, setSelectedCategories] = useState<string[]>(["Restaurant", "Park", "Pub", "Museum", "Shop", "Other"]);
     const [filteredMarkers, setFilteredMarkers] = useState<Marker[]>([]);
-
+    const [loading, setLoading] = useState(true); // Add loading state
     const [profileOpen, setProfileOpen] = useState(false);
+
+    //SOLID INTEGRATION
+    const { session } = useSession();
+
+    const navigate = useNavigate();
+
+    React.useEffect(() => {
+        loadLocations();
+
+    }, []);
+
+
+
+    async function loadLocations() {
+        try {
+            setLoading(true); // Start loading
+
+            if (session.info.webId) {
+                let locations = await getLocations(session.info.webId) as Marker[];
+  
+                console.log(locations);
+                let friends = await getFriendsID(session.info.webId);
+
+                for (let friend of friends) {
+                    let friendLocations = await getLocations(friend) as Marker[];
+                    console.log(friendLocations);
+                    locations = locations.concat(friendLocations);
+                    console.log(locations);
+                }
+                setMarkers(locations);
+                setFilteredMarkers(locations);
+                console.log(locations);
+            }
+        } catch (error) {
+            console.log('Error loading locations:', error);
+        } finally {
+            setLoading(false); // Stop loading
+        }
+    }
+
+
+    useEffect(() => {
+
+        handleRedirectAfterLogin();
+
+    }, []);
+
+    async function handleRedirectAfterLogin() {
+        await session.handleIncomingRedirect(window.location.href);
+        if (!session.info.isLoggedIn) {
+            navigate("/login"); //desactivar when testing
+        }
+
+    }
+
 
     const handleMapClick = (event: google.maps.MapMouseEvent) => {
         const clickedMarker: Marker = {
+            url: session.info.webId,
             name: '',
             description: '',
             image: '',
             reviews: [],
             ratings: 0,
             category: '',
+
             position: {
                 lat: event.latLng?.lat() ? event.latLng?.lat() : 0,
                 lng: event.latLng?.lng() ? event.latLng?.lng() : 0
@@ -47,22 +107,25 @@ const GoogleMapComponent: React.FC = () => {
     };
 
     const handleMarkerFormSubmit = (markerData: Marker) => {
-        if (marker) {
+        if (marker && session.info.webId) {
+
             const updatedMarker: Marker = {
                 ...marker,
+                url: session.info.webId,
                 name: markerData.name,
                 description: markerData.description,
                 image: markerData.image,
                 reviews: markerData.reviews,
                 ratings: markerData.ratings,
-                category: markerData.category
+                category: markerData.category,
+                imagesAsFile: markerData.imagesAsFile
             };
             setMarkers(prevMarkers => [...prevMarkers, updatedMarker]);
+            createLocation(session.info.webId, updatedMarker);
         }
         setMarker(null);
-        const temp  = filteredMarkers;
-        setFilteredMarkers([]);
-        setFilteredMarkers(temp);
+        setSelectedCategories([]);
+        handleFilters();
     };
     const handleMarkerFormCancel = () => {
         setMarker(null);
@@ -74,7 +137,7 @@ const GoogleMapComponent: React.FC = () => {
 
     const handleCloseInfoWindow = () => {
         setSelectedMarker(null);
-        const temp  = filteredMarkers;
+        const temp = filteredMarkers;
         setFilteredMarkers([]);
         setFilteredMarkers(temp);
     };
@@ -95,15 +158,38 @@ const GoogleMapComponent: React.FC = () => {
             : markers);
     };
 
-    const clearFilters = () => {
+    const clearFilters = async () => {
         setSelectedCategories([]);
-        setFilteredMarkers(markers);
+        try {
+            setLoading(true); // Start loading
+
+            if (session.info.webId) {
+                let locations = await getLocations(session.info.webId) as Marker[];
+  
+                console.log(locations);
+                let friends = await getFriendsID(session.info.webId);
+
+                for (let friend of friends) {
+                    let friendLocations = await getLocations(friend) as Marker[];
+                    console.log(friendLocations);
+                    locations = locations.concat(friendLocations);
+                    console.log(locations);
+                }
+
+                setFilteredMarkers(locations);
+                console.log(locations);
+            }
+        } catch (error) {
+            console.log('Error loading locations:', error);
+        } finally {
+            setLoading(false); // Stop loading
+        }
     };
 
 
     const handleAddReview = (review: string, rating: number): Marker | void => {
         if (selectedMarker) {
-            
+
             const updatedReviews = [...selectedMarker.reviews, review];
             const updatedRatings =
                 (selectedMarker.ratings * selectedMarker.reviews.length + rating) /
@@ -128,6 +214,9 @@ const GoogleMapComponent: React.FC = () => {
 
 
     const logout = () => {
+        session.logout();
+        navigate("/login");
+
     };
 
 
@@ -148,15 +237,24 @@ const GoogleMapComponent: React.FC = () => {
                 >
                     {marker && <GoogleMarker position={marker.position} />}
                     {filteredMarkers.map(marker => (
-                        <GoogleMarker
+                        marker.url!.split(".")[0] === session.info.webId!.split(".")[0] ?
+                        (<GoogleMarker
                             key={marker.position.lat + marker.position.lng}
-                            position={marker.position}
+                            position={new google.maps.LatLng(marker.position.lat, marker.position.lng)}
                             onClick={() => handleMarkerClick(marker)}
-                        />
+                            icon={{ url: "http://maps.google.com/mapfiles/ms/icons/orange-dot.png" }}
+                        />):
+                            (<GoogleMarker
+                                key={marker.position.lat + marker.position.lng}
+                                position={new google.maps.LatLng(marker.position.lat, marker.position.lng)}
+                                onClick={() => handleMarkerClick(marker)}
+                                icon={{ url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png" }}
+                            />) 
+
                     ))}
                     {selectedMarker && (
                         <InfoWindow
-                            position={selectedMarker.position}
+                            position={new google.maps.LatLng(selectedMarker.position.lat, selectedMarker.position.lng)}
                             onCloseClick={handleCloseInfoWindow}
                         >
                             <MarkerInfo
@@ -167,7 +265,7 @@ const GoogleMapComponent: React.FC = () => {
                     )}
                     {marker && (
                         <InfoWindow
-                            position={marker.position}
+                            position={new google.maps.LatLng(marker.position.lat, marker.position.lng)}
                             onCloseClick={handleCloseForm}>
                             <MarkerForm
                                 onSubmit={handleMarkerFormSubmit}
@@ -177,7 +275,11 @@ const GoogleMapComponent: React.FC = () => {
                         </InfoWindow>
                     )}
 
-
+                    {loading && (
+                        <div className="floating-div loading-div" style={{ position: 'absolute', top: 10, left: 250, zIndex: 1 }}>
+                            <p>Loading markers...</p>
+                        </div>
+                    )}
                     {/* FILTERS POPUP */}
 
                     <div className="floating-div filter-div">
@@ -212,28 +314,7 @@ const GoogleMapComponent: React.FC = () => {
                         <Friends />
                     </div>
 
-                    {profileOpen && (
-                        <div className="floating-div profile-div"
-                            style={{
-                                position: 'absolute',
-                                top: 50,
-                                left: 10,
-                                background: '#fff',
-                                padding: 10,
-                                zIndex: 1,
-                            }}
-                        >
-                            <h3>Profile</h3>
-                            <p>Name: John Doe</p>
-                            <p>Email: johndoe@example.com</p>
-                            <p>Location: New York City</p>
-
-                            <div>
-                                <p>Levels: 5</p>
-                                <progress className="progress-bar" max="10" value="5"></progress>
-                            </div>
-                        </div>
-                    )}
+                    {profileOpen && <Profile />}
 
 
                     <button
@@ -251,23 +332,23 @@ const GoogleMapComponent: React.FC = () => {
                         Logout
                     </button>
                     <Tooltip leaveDelay={200} enterDelay={200}
-                    title="1. Click on the map to create a marker
+                        title="1. Click on the map to create a marker
                     2. Click on a marker to read info and make reviews
                     3. You can add friends and filter with the right bar
                     4. You can see your current level on the profile"
-                    
+
                     >
-                    <button
-                        className='button'
-                        style={{ position: 'absolute', top: 10, left: 170, zIndex: 1,height:31}}
-                       
-                    >   
-                        
-                        <HelpOutlineOutlinedIcon /> {/* Use the FaQuestion icon from react-icons */}
-                        
-                    </button>
+                        <button
+                            className='button'
+                            style={{ position: 'absolute', top: 10, left: 170, zIndex: 1, height: 31 }}
+
+                        >
+
+                            <HelpOutlineOutlinedIcon /> {/* Use the FaQuestion icon from react-icons */}
+
+                        </button>
                     </Tooltip>
-                     {/* Define the tooltip with the same identifier */}
+                    {/* Define the tooltip with the same identifier */}
 
                 </GoogleMap>
 

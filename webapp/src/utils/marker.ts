@@ -1,4 +1,5 @@
 export interface Marker {
+  url? : string,
     name: string;
     description: string;
     image: string;
@@ -9,4 +10,7 @@ export interface Marker {
       lat: number;
       lng: number;
     };
+    imagesAsFile?: File;
   }
+
+

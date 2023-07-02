@@ -26,3 +26,9 @@ export type Review = {
     content:string,
     username:string
 };
+
+export type Friend={
+    username : string,
+    webID : string,
+    pfp: string
+};
