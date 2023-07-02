@@ -40,7 +40,7 @@ export default function MarkerInfo(props: MarkerInfoProps): JSX.Element {
   
   return (
     <div className="marker-details">
-      {marker.url!.split(".")[0] === session.info.webId!.split(".")[0]? <button className='button3' onClick={() => onDelete(currentMarker)}>Delete</button> : ""}
+      {(marker.url?marker.url:"").split(".")[0] === (session.info.webId?session.info.webId:"").split(".")[0]? <button data-testid="delete" className='button3' onClick={() => onDelete(currentMarker)}>Delete</button> : ""}
       <h2>{currentMarker.name}</h2>
       <p>{currentMarker.description}</p>
       <img src={currentMarker.image} alt ="" />
@@ -61,11 +61,11 @@ export default function MarkerInfo(props: MarkerInfoProps): JSX.Element {
       <p>Category: </p><div className='info'>{currentMarker.category}</div>
       <div className="review-section">
         <p>Add a Review:</p>
-        <input type="text" value={newReview} onChange={handleReviewChange} />
+        <input data-testid="input" type="text" value={newReview} onChange={handleReviewChange} />
         <div className="rating-section">
           {[1, 2, 3, 4, 5].map((star) => (
             <label key={star}>
-              <input
+              <input data-testid="rating"
                 type="radio"
                 name="rating"
                 value={star}
@@ -76,7 +76,7 @@ export default function MarkerInfo(props: MarkerInfoProps): JSX.Element {
             </label>
           ))}
         </div>
-        <button className='button2' onClick={handleAddReview}>Add Review</button>
+        <button data-testid="submit" className='button2' onClick={handleAddReview}>Add Review</button>
       </div>
     </div>
 

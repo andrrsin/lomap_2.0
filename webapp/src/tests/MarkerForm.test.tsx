@@ -103,6 +103,12 @@ describe('MarkerForm', () => {
       description: 'Marker Description',
       image: '',
       category: 'Restaurant',
+      position: {
+        lat: 0,
+        lng: 0
+      },
+      reviews: [],
+      ratings: 0
     });
   });
 
