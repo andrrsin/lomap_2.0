@@ -2,17 +2,20 @@ import React from 'react';
 import { Marker } from "../../utils/marker";
 import { useState } from "react";
 import './MarkerInfo.css';
+
+import { useSession } from '@inrupt/solid-ui-react';
 interface MarkerInfoProps {
   marker: Marker;
-  onAddReview: (review: string, rating: number) => Marker | void;
+  onAddReview: (review: string, rating: number) => void;
+  onDelete: (marker: Marker) => void;
 }
 
 export default function MarkerInfo(props: MarkerInfoProps): JSX.Element {
-  const { marker, onAddReview } = props;
-
+  const { marker, onAddReview,onDelete } = props;
+  const {session} = useSession();
   const [newReview, setNewReview] = useState('');
   const [newRating, setNewRating] = useState(0);
-  const [currentMarker, setMarker] = useState<Marker>(marker);
+  const [currentMarker] = useState<Marker>(marker);
   const handleReviewChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setNewReview(event.target.value);
   };
@@ -28,16 +31,19 @@ export default function MarkerInfo(props: MarkerInfoProps): JSX.Element {
   const handleAddReview = () => {
     if (newReview) {
 
-      const updatedMarker = onAddReview(newReview, newRating);
-      setMarker(updatedMarker ? updatedMarker : currentMarker);
+      onAddReview(newReview, newRating);
+
       setNewReview('');
     }
   };
+
+  
   return (
     <div className="marker-details">
+      {marker.url!.split(".")[0] === session.info.webId!.split(".")[0]? <button className='button3' onClick={() => onDelete(currentMarker)}>Delete</button> : ""}
       <h2>{currentMarker.name}</h2>
       <p>{currentMarker.description}</p>
-      {currentMarker.image === "" ? "" : <img src={currentMarker.image} />}
+      <img src={currentMarker.image} alt ="" />
       <p>Reviews:</p>
       <div className='reviewsWrapper'>
         {currentMarker.reviews.map((review, index) => (
