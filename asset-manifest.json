@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/lomap_2.0/static/css/main.385d7dbb.css",
-    "main.js": "/lomap_2.0/static/js/main.31e5f089.js",
+    "main.js": "/lomap_2.0/static/js/main.bd30f428.js",
     "static/js/787.994511a4.chunk.js": "/lomap_2.0/static/js/787.994511a4.chunk.js",
     "index.html": "/lomap_2.0/index.html",
     "main.385d7dbb.css.map": "/lomap_2.0/static/css/main.385d7dbb.css.map",
-    "main.31e5f089.js.map": "/lomap_2.0/static/js/main.31e5f089.js.map",
+    "main.bd30f428.js.map": "/lomap_2.0/static/js/main.bd30f428.js.map",
     "787.994511a4.chunk.js.map": "/lomap_2.0/static/js/787.994511a4.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.385d7dbb.css",
-    "static/js/main.31e5f089.js"
+    "static/js/main.bd30f428.js"
   ]
 }
