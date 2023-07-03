@@ -9,13 +9,15 @@ import MarkerInfo from '../markerInfo/MarkerInfo';
 import Friends from '../friends/friends';
 import "./map.css";
 import { useSession } from "@inrupt/solid-ui-react";
-import Tooltip from "@mui/material/Tooltip"
+
 import { useNavigate } from "react-router-dom";
-import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
+
 import Profile from '../profile/Profile';
 import { createLocation } from "../../utils/solid";
 import { getLocations, getFriendsID } from "../../utils/solid";
 import { addLocationReview } from "../../utils/solid";
+import Filters from '../filters/Filters';
+import ButtonMenu from '../buttonMenu/buttonMenu';
 
 // lat: event.latLng?.lat()?event.latLng?.lat():0,
 // lng: event.latLng?.lng()?event.latLng?.lng():0
@@ -36,8 +38,8 @@ const GoogleMapComponent: React.FC = () => {
 
     //SOLID INTEGRATION
     const { session } = useSession();
-
     const navigate = useNavigate();
+
 
     React.useEffect(() => {
         loadLocations();
@@ -201,11 +203,7 @@ const GoogleMapComponent: React.FC = () => {
     };
 
 
-    const logout = () => {
-        session.logout();
-        navigate("/login");
-
-    };
+  
 
     const handleDelete = async (marker: Marker) => {
         if (session.info.webId){
@@ -218,6 +216,11 @@ const GoogleMapComponent: React.FC = () => {
 
     const handleProfileToggle = () => {
         setProfileOpen(!profileOpen);
+    };
+
+    const logout = async () => {
+        await session.logout();
+        navigate("/login");
     };
 
     return (
@@ -234,13 +237,13 @@ const GoogleMapComponent: React.FC = () => {
                     {marker && <GoogleMarker position={marker.position} />}
                     {filteredMarkers.map(marker => (
                         marker.url!.split(".")[0] === session.info.webId!.split(".")[0] ?
-                        (<GoogleMarker
+                        (<GoogleMarker test-id="marker"
                             key={marker.position.lat.toString() + marker.position.lng.toString()}
                             position={new google.maps.LatLng(marker.position.lat, marker.position.lng)}
                             onClick={() => handleMarkerClick(marker)}
                             icon={{ url: "http://maps.google.com/mapfiles/ms/icons/orange-dot.png" }}
                         />):
-                            (<GoogleMarker
+                            (<GoogleMarker test-id="marker"
                                 key={marker.position.lat.toString() + marker.position.lng.toString()+new Date().getTime()}
                                 position={new google.maps.LatLng(marker.position.lat, marker.position.lng)}
                                 onClick={() => handleMarkerClick(marker)}
@@ -279,28 +282,8 @@ const GoogleMapComponent: React.FC = () => {
                     )}
                     {/* FILTERS POPUP */}
 
-                    <div className="floating-div filter-div">
-                        <h3 className="filter-title">Filter</h3>
-                        <div className="filter-select-wrapper">
-                            <select className="filter-select" multiple value={selectedCategories} onChange={handleCategoryChange}>
-                                <option value="Restaurant">Restaurant</option>
-                                <option value="Park">Park</option>
-                                <option value="Pub">Pub</option>
-                                <option value="Museum">Museum</option>
-                                <option value="Shop">Shop</option>
-                                <option value="Other">Other</option>
-                            </select>
-                            <div className="filter-select-icon">&#9662;</div>
-                        </div>
-                        <div className="filter-button-group">
-                            <button className="filter-button" onClick={handleFilters}>
-                                Apply
-                            </button>
-                            <button className="filter-button" onClick={clearFilters}>
-                                Clear
-                            </button>
-                        </div>
-                    </div>
+                    <Filters selectedCategories={selectedCategories} handleFilters={handleFilters} clearFilters={clearFilters} handleCategoryChange={handleCategoryChange} />
+
 
 
 
@@ -310,41 +293,8 @@ const GoogleMapComponent: React.FC = () => {
                     <div className="floating-div friends-div">
                         <Friends />
                     </div>
-
                     {profileOpen && <Profile />}
-
-
-                    <button
-                        className='button'
-                        style={{ position: 'absolute', top: 10, left: 10, zIndex: 1 }}
-                        onClick={handleProfileToggle}
-                    >
-                        {profileOpen ? 'Close Profile' : 'Open Profile'}
-                    </button>
-                    <button
-                        className='button'
-                        style={{ position: 'absolute', top: 10, left: 105, zIndex: 1 }}
-                        onClick={logout}
-                    >
-                        Logout
-                    </button>
-                    <Tooltip leaveDelay={200} enterDelay={200}
-                        title="1. Click on the map to create a marker
-                    2. Click on a marker to read info and make reviews
-                    3. You can add friends and filter with the right bar
-                    4. You can see your current level on the profile"
-
-                    >
-                        <button
-                            className='button'
-                            style={{ position: 'absolute', top: 10, left: 170, zIndex: 1, height: 31 }}
-
-                        >
-
-                            <HelpOutlineOutlinedIcon /> {/* Use the FaQuestion icon from react-icons */}
-
-                        </button>
-                    </Tooltip>
+                    <ButtonMenu handleProfileToggle={handleProfileToggle} profileOpen={profileOpen} logout={logout}/>
                     {/* Define the tooltip with the same identifier */}
 
                 </GoogleMap>

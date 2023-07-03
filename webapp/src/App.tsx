@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+
 import './App.css';
 import GoogleMapComponent from './components/map/map';
 import {   createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Login from './pages/Login';
+
 
 function App(): JSX.Element {
 
@@ -12,7 +13,8 @@ function App(): JSX.Element {
     // if (!session.info.isLoggedIn) {
     //  return <Navigate to="/login" />;
     // }
-    console.log("ProtectedRoute");
+
+
     return children;
   };
 
@@ -21,7 +23,7 @@ function App(): JSX.Element {
       path: "/",
 
       element: (
-        <ProtectedRoute>
+      <ProtectedRoute>
       <GoogleMapComponent />
       </ProtectedRoute>),
     },
