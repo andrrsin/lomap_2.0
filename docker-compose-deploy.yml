@@ -1,6 +1,8 @@
 version: '3.5'
 services:
+  
   webapp:
-    image: ghcr.io/arquisoft/lomap_0/webapp:latest
+    image: ghcr.io/arquisoft/lomap_en2a/webapp:latest
     ports:
       - "3000:3000"
+    
