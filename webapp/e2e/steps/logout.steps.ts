@@ -5,10 +5,10 @@ const feature = loadFeature('./features/viewProfile.feature');
 
 let page: puppeteer.Page;
 let browser: puppeteer.Browser;
-// Scenario: A user views his profile
+// Scenario: A user logs out
 //   Given The user logs in
-//   When Clicks to show profile
-//   Then the profile is shown
+//   When Clicks logout
+//   Then The login window is shown
 defineFeature(feature, test => {
 
     beforeAll(async () => {
@@ -25,7 +25,7 @@ defineFeature(feature, test => {
         jest.setTimeout(100000);
     });
 
-    test("A user views his profile",({given,when,then}) => {
+    test("A user logs out",({given,when,then}) => {
         jest.setTimeout(100000);
         given("The user logs in", async () => {
             await expect(page).toClick("button", {text:"Login"});
@@ -43,14 +43,17 @@ defineFeature(feature, test => {
       
         });
 
-        when("Clicks to show profile", async () => {
-            const profile = await page.click("button");
+        when("Clicks logout", async () => {
+            const profile = await expect(page).toClick("button",{text:"Logout"});
             await page.waitForTimeout(3000); // wait for 10 seconds
 
         });
 
         then("The profile is shown", async () => {
-            await expect(page).toMatch('WebID:')
+            await page.waitForNavigation();
+            await expect(page).toMatch('Login')
+      
+            
         });
 
     })

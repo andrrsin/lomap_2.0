@@ -1,7 +1,7 @@
 import { defineFeature, loadFeature } from "jest-cucumber";
 import puppeteer from "puppeteer";
 
-const feature = loadFeature('./features/viewProfile.feature');
+const feature = loadFeature('./features/addMarker.feature');
 
 let page: puppeteer.Page;
 let browser: puppeteer.Browser;
@@ -24,10 +24,13 @@ defineFeature(feature, test => {
             .catch(() => {});
         jest.setTimeout(100000);
     });
-
-    test("A user views his profile",({given,when,then}) => {
+    // Scenario: The user is logged in the site
+    // Given A logged in user clicks in the map and the infowindow is shown
+    // When  The form is filled and add is pressed
+    // Then the markers should reload and appear the new one
+    test("A logged user creates a marker",({given,when,then}) => {
         jest.setTimeout(100000);
-        given("The user logs in", async () => {
+        given("A logged in user clicks in the map and the infowindow is shown", async () => {
             await expect(page).toClick("button", {text:"Login"});
       
             await page.waitForNavigation(); // wait for the login page to load
@@ -40,17 +43,22 @@ defineFeature(feature, test => {
             await page.waitForNavigation(); // wait for the redirect
             // await page.waitForTimeout(30000); // wait for 25 seconds (load locations??)
             await page.waitForTimeout(8000);
+
+            await page.click("GoogleMap");
+            await page.waitForTimeout(200); 
+           
+
       
         });
 
-        when("Clicks to show profile", async () => {
-            const profile = await page.click("button");
-            await page.waitForTimeout(3000); // wait for 10 seconds
+        when("The form is filled and add is pressed", async () => {
+            await page.type('#name', "Test Marker")
+            await page.type('#description', "Test Description")
 
         });
 
-        then("The profile is shown", async () => {
-            await expect(page).toMatch('WebID:')
+        then("the markers should reload and appear the new one", async () => {
+            await expect(page).toMatchElement("Marker");
         });
 
     })
