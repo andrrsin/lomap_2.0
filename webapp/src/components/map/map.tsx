@@ -52,12 +52,12 @@ const GoogleMapComponent: React.FC = () => {
                     let locations:Marker[] = [];
          
                     let friends = await getFriendsID(session.info.webId);
-    
+                    console.log(friends);
                     for (let friend of friends) {
                         let friendLocations = await getLocations(friend) as Marker[];
-                 
+                        console.log(friendLocations);
                         locations = locations.concat(friendLocations);
-                      
+                        console.log(locations);
                     }
                     setMarkers(locations);
                     setFilteredMarkers(locations);
@@ -80,6 +80,7 @@ const GoogleMapComponent: React.FC = () => {
         handleRedirectAfterLogin();
         async function handleRedirectAfterLogin() {
             await session.handleIncomingRedirect(window.location.href);
+            console.log(session.info);
             if (!session.info.isLoggedIn) {
                 navigate("/login"); //desactivar when testing
             }
@@ -108,7 +109,7 @@ const GoogleMapComponent: React.FC = () => {
         setMarker(clickedMarker);
     };
 
-    const handleMarkerFormSubmit = (markerData: Marker) => {
+    const handleMarkerFormSubmit = async (markerData: Marker) => {
         if (marker && session.info.webId) {
 
             const updatedMarker: Marker = {
@@ -126,8 +127,7 @@ const GoogleMapComponent: React.FC = () => {
             createLocation(session.info.webId, updatedMarker);
         }
         setMarker(null);
-        setSelectedCategories([]);
-        handleFilters();
+        await clearFilters();
     };
     const handleMarkerFormCancel = () => {
         setMarker(null);

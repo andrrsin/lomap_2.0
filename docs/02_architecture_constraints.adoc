@@ -17,3 +17,17 @@ If needed you can subdivide them into
 technical constraints, organizational and political constraints and
 conventions (e.g. programming or versioning guidelines, documentation or naming conventions)
 ****
+
+[options="header", cols="1,1"]
+|===
+| Constraint | Explanation
+
+|SOLID | SOLID is used to decentralice the app and ensure the privacy of the user
+| Github | Github is a version control, known to help developers keep track of the changes among a group of developers.
+
+| Deployment in gh pages | The application will be deployed in github pages to ensure it remains up even in long term, not needing a dedicated server.
+
+| Test coverage | Code must meet a decent coverage to ensure a minimum capacity.
+
+
+|===

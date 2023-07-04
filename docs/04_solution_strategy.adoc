@@ -2,6 +2,19 @@
 == Solution Strategy
 
 
+=== Technologies
+
+* *Google Maps API*. Google Maps is probably the most famous tool for online maps. Its api is really intuitive and easy to use. Therefore is a safe way to go
+* *Solid Way*. In order to keep the data decentralized solid is chosen. Achieves privacy really easily. It is still expanding so the performance will drop a little bit but it is worth it.
+* *React*. React is a really powerful tool to create user interfaces. It is really easy to use and it is really fast. It is also really easy to integrate with the base languages we are using (HTML, CSS and TS).
+
+
+=== Design
+* *Serverless app*. The SOLID initiative give us a semi serverless approach as we don't need an api, but we rely on the solid server to store the data.
+* *Client-side component*. The code is in the browser, giving the client the 100% of the code.
+
+
+
 [role="arc42help"]
 ****
 .Contents

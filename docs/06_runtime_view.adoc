@@ -1,5 +1,76 @@
 [[section-runtime-view]]
 == Runtime View
+=== Login to Solid
+
+When the user enters the application, the login page is loaded.
+
+[plantuml,"Login to Solid",png]
+----
+@startuml
+header LoMap-en2a
+
+title Login to Solid
+
+database PodProvider
+
+User -> Application: select pod provider
+User -> Application: click login button
+Application-> PodProvider: redirect login
+User -> PodProvider: login to solid
+Application -> PodProvider: useSession()
+
+
+@enduml
+----
+
+=== Add location to the user's map
+
+To add a location, the user clicks on the map. The map will display a marker with a form to add the location. The user fills the form and clicks on the add button.
+
+[plantuml,"Addition of a location",png]
+----
+@startuml
+
+header LoMap-en2a
+
+title Addition of a location
+
+database PodProvider
+
+User -> Application: clicks the map
+Application -> Application: MarkerForm rendered
+User -> MarkerForm: write fields of the location
+User -> MarkerForm: click add location
+MarkerForm -> MarkerForm: adds location to the map
+MarkerForm -> SolidManagement: reload the existing markers
+
+@enduml
+----
+
+=== Remove location from user's map
+
+To delete a location, the user clicks on an existing marker made by him. The marker will display the info. And at the beggining there's a delete button
+
+[plantuml,"Remove location from map",png]
+-----
+@startuml
+
+header LoMap-en2a
+
+title Remove a location
+
+database PodProvider
+actor User
+
+User -> Map : click on the marker
+Map -> Application: Shows the info of the marker
+User -> MarkerInfo: click delete button
+MarkerInfo -> SolidManagement: Delete the location
+MarkerInfo -> SolidManagement: reload the existing markers
+MarkerInfo -> Map: display updated markers
+
+@enduml
+-----
 
 
 [role="arc42help"]
@@ -30,28 +101,4 @@ There are many notations for describing scenarios, e.g.
 
 ****
 
-=== <Runtime Scenario 1>
 
-
-* _<insert runtime diagram or textual description of the scenario>_
-* _<insert description of the notable aspects of the interactions between the
-building block instances depicted in this diagram.>_
-
-It is possible to use a sequence diagram:
-
-[plantuml,"Sequence diagram",png]
-----
-actor Alice
-actor Bob
-database Pod as "Bob's Pod"
-Alice -> Bob: Authentication Request
-Bob --> Alice: Authentication Response
-Alice  --> Pod: Store route
-Alice -> Bob: Another authentication Request
-Alice <-- Bob: another authentication Response
-----
-=== <Runtime Scenario 2>
-
-=== ...
-
-=== <Runtime Scenario n>

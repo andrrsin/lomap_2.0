@@ -24,9 +24,12 @@ export default function MarkerInfo(props: MarkerInfoProps): JSX.Element {
 
     const rating = parseInt(event.target.value);
     setNewRating(rating);
-
+    console.log(marker.url)
+    console.log(session.info)
 
   };
+
+
 
   const handleAddReview = () => {
     if (newReview) {

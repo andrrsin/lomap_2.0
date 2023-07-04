@@ -11,22 +11,22 @@ const Login = () => {
         
         e.preventDefault(); //if not used, the page will reload and data will be lost
         login({
-          redirectUrl: "http://localhost:3000/", // after redirect, come to the actual page
+          redirectUrl: "https://andrrsin.github.io/lomap_2.0/", // after redirect, come to the actual page
           oidcIssuer: idp, // redirect to the url
           clientName: "Lo Map",
         });
       };
 
     return (
-        <div style ={{backgroundImage:" url(/Fondo.png)",height:"100vh"}}>
+        <div style ={{backgroundImage:" url(Fondo.png)",height:"100vh"}}>
 
         <Container>
             <div className="wrapper">
-            <img className="loginLogo" src="/Lomap.png"/>
+            <img className="loginLogo" src="Lomap.png"/>
             <div className="rightPart">
 
             <p className="loginText"> BITS is an initiative by HappySW where Lomap is converted to a game!</p>
-            <p className="loginText"> As all HappySW we believe in privacy we use SOLID technologies</p>
+            <p className="loginText"> In HappySW we believe in privacy we use SOLID technologies</p>
             <p className="loginText"> Log in with your provider or create an account in one of them.</p>
             <div className="distances"></div>
             <FormGroup className="loginInput">

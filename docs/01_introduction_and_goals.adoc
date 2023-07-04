@@ -10,7 +10,13 @@ Describes the relevant requirements and the driving forces that software archite
 * relevant stakeholders and their expectations
 ****
 
+Lomaps BITS is an innovative maps project that has been brought to life by Happy SW, a software development company hired by Brussels. Where you can add markers, review them and watch the marker of your friends. Not only that but to encourage the activity among the young people BITS has a level system that will give you points for every marker you add.
+
+=== Dedicatory
+I wanted to thank Patri and Pablo from lomap_en2a that have helped me with all the doubts I've had along the time, as long as allowing me to use some parts of their code for the solid logic.
+
 === Requirements Overview
+This web application allows filtering of markers by category. It uses the SOLID techniques to have further control surrounding user privacy. Storing the data in pods in full control of the client, allowing even choosing the permissions lomap has.
 
 [role="arc42help"]
 ****
@@ -45,6 +51,22 @@ If you as an architect do not know how the quality of your work will be judged â
 A table with quality goals and concrete scenarios, ordered by priorities
 ****
 
+|===
+| Goal | Description
+
+| Security | Pods ensure the security of the data, since the control is completely given to the user.
+
+| Performance | The application is able to give reasonable response times when users are interacting with it. Minimizing the overload time as it's decentralized and serverless.
+
+| Availability | The data is both, private and controlled but easily accesed by the allowed users.
+
+| Usability | The application is easy and intuitive.
+
+| Portability | The application is able to run in any device with a browser and internet connection.
+
+| Testability | Tests are done to ensure the quality of the application.
+
+|===
 === Stakeholders
 
 [role="arc42help"]
@@ -69,7 +91,9 @@ Table with role names, person names, and their expectations with respect to the 
 
 [options="header",cols="1,2,2"]
 |===
-|Role/Name|Contact|Expectations
-| _<Role-1>_ | _<Contact-1>_ | _<Expectation-1>_
-| _<Role-2>_ | _<Contact-2>_ | _<Expectation-2>_
+|Role|Description|Expectations
+| Council of Brussels | The inventor of the idea | An web application. Which is able to be used by the citizens of Brussels encouraging their daily activity.
+| HappySw | The developer team | A web application full filling the desires of Brussels.
+| Developers | The software developers | In hands of a Software Architect will create a good documentation and a readable and low coupled code.
+| Users | Use the app | An application which they hav econtrol over their data and allow them to have places by their own.
 |===

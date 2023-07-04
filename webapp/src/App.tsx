@@ -1,7 +1,7 @@
 
 import './App.css';
 import GoogleMapComponent from './components/map/map';
-import {   createBrowserRouter, RouterProvider } from 'react-router-dom';
+import {   createHashRouter, RouterProvider } from 'react-router-dom';
 import Login from './pages/Login';
 
 
@@ -18,7 +18,7 @@ function App(): JSX.Element {
     return children;
   };
 
-  const router = createBrowserRouter([
+  const router = createHashRouter([
     {
       path: "/",
 
