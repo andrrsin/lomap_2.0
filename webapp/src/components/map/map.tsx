@@ -79,7 +79,7 @@ const GoogleMapComponent: React.FC = () => {
 
         handleRedirectAfterLogin();
         async function handleRedirectAfterLogin() {
-            await session.handleIncomingRedirect(window.location.href);
+            //await session.handleIncomingRedirect(window.location.href);
             console.log(session.info);
             if (!session.info.isLoggedIn) {
                 navigate("/login"); //desactivar when testing

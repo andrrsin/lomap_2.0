@@ -2,7 +2,7 @@
   "name": "docs",
   "version": "1.0.0",
   "description": "Npm project just for the docs",
-  "homepage": "https://arquisoft.github.io/lomap_en2a/documentation",
+  "homepage": "https://andrrsin.github.io/lomap_2.0/documentation",
   "main": "index.js",
   "scripts": {
     "build": "shx rm -rf build && asciidoctor -D build -a imagesdir=./images -r asciidoctor-diagram index.adoc && shx cp -R images build",
