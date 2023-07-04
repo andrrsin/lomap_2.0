@@ -1,3 +1,5 @@
+Feature: A user wants to logout
+
 Scenario: A user logs out
   Given The user logs in
   When Clicks logout

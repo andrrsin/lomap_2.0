@@ -19,7 +19,7 @@ const MarkerForm: React.FC<MarkerFormProps> = ({ onSubmit, onCancel, initialMark
     
     const file = e.target.files?.[0];
     if (file) {
-      const updatedMarker = { ...marker, imagesAsFile:file };
+      
       const reader = new FileReader();
       reader.onload = () => {
         setSelectedImage(reader.result as string);

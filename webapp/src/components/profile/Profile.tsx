@@ -19,7 +19,7 @@ export default function Profile(): JSX.Element {
                 setImage(image)
             })
         }
-    }, []);
+    }, );
 
 
 
@@ -71,7 +71,7 @@ export default function Profile(): JSX.Element {
             <div className="profile-header">
                 <div className="profile-image">
 
-                    <img src={image} />
+                    <img src={image} alt =""/>
                 </div>
                 <h3>{name}</h3>
             </div>

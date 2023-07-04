@@ -124,10 +124,12 @@ const GoogleMapComponent: React.FC = () => {
                 imagesAsFile: markerData.imagesAsFile
             };
             setMarkers(prevMarkers => [...prevMarkers, updatedMarker]);
-            createLocation(session.info.webId, updatedMarker);
+            await createLocation(session.info.webId, updatedMarker);
         }
+        
         setMarker(null);
         await clearFilters();
+        
     };
     const handleMarkerFormCancel = () => {
         setMarker(null);
@@ -166,16 +168,17 @@ const GoogleMapComponent: React.FC = () => {
             setLoading(true); // Start loading
 
             if (session.info.webId) {
-                // let locations = await getLocations(session.info.webId) as Marker[];
-                let locations:Marker[] = [];
+                let locations = await getLocations(session.info.webId) as Marker[];
+           
                 
                 let friends = await getFriendsID(session.info.webId);
-
+              
                 for (let friend of friends) {
+                    if (friend.split('#')[0] !== session.info.webId.split('#')[0]) {
                     let friendLocations = await getLocations(friend) as Marker[];
 
                     locations = locations.concat(friendLocations);
-
+                    }
                 }
 
                 setFilteredMarkers(locations);
