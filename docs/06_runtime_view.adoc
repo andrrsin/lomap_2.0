@@ -7,7 +7,7 @@ When the user enters the application, the login page is loaded.
 [plantuml,"Login to Solid",png]
 ----
 @startuml
-header LoMap-en2a
+header LoMap-BITS
 
 title Login to Solid
 
@@ -31,7 +31,7 @@ To add a location, the user clicks on the map. The map will display a marker wit
 ----
 @startuml
 
-header LoMap-en2a
+headerLoMap-BITS
 
 title Addition of a location
 
@@ -42,7 +42,7 @@ Application -> Application: MarkerForm rendered
 User -> MarkerForm: write fields of the location
 User -> MarkerForm: click add location
 MarkerForm -> MarkerForm: adds location to the map
-MarkerForm -> SolidManagement: reload the existing markers
+MarkerForm -> PodProvider: reload the existing markers
 
 @enduml
 ----
@@ -55,7 +55,7 @@ To delete a location, the user clicks on an existing marker made by him. The mar
 -----
 @startuml
 
-header LoMap-en2a
+header LoMap-BITS
 
 title Remove a location
 
@@ -65,8 +65,8 @@ actor User
 User -> Map : click on the marker
 Map -> Application: Shows the info of the marker
 User -> MarkerInfo: click delete button
-MarkerInfo -> SolidManagement: Delete the location
-MarkerInfo -> SolidManagement: reload the existing markers
+MarkerInfo -> PodProvider: Delete the location
+MarkerInfo -> PodProvider: reload the existing markers
 MarkerInfo -> Map: display updated markers
 
 @enduml

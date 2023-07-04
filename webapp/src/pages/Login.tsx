@@ -1,9 +1,9 @@
 import {useState} from "react";
 import {Button, Container, FormGroup, TextField} from "@mui/material";
 import "./login.css"
-import {LoginButton} from "@inrupt/solid-ui-react";
+
 import { login } from "@inrupt/solid-client-authn-browser";
-import exp from "constants";
+
 const Login = () => {
     const [idp, setIdp] = useState("https://inrupt.net");
 
@@ -22,7 +22,7 @@ const Login = () => {
 
         <Container>
             <div className="wrapper">
-            <img className="loginLogo" src="Lomap.png"/>
+            <img className="loginLogo" src="Lomap.png" alt =""/>
             <div className="rightPart">
 
             <p className="loginText"> BITS is an initiative by HappySW where Lomap is converted to a game!</p>
@@ -51,7 +51,7 @@ const Login = () => {
                             // <LoginButton oidcIssuer={idp}
                             //              redirectUrl="http://172.162.240.176:3000/main/"
                             //              onError={console.error}>
-                                <Button variant="contained" onClick={(e) => {
+                                <Button data-testid="loginButton" variant="contained" onClick={(e) => {
                                     handleSubmit(e);
                                 
                                 }}>
