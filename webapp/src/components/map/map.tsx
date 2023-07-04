@@ -42,34 +42,9 @@ const GoogleMapComponent: React.FC = () => {
 
 
     React.useEffect(() => {
-        loadLocations();
-        async function loadLocations() {
-            try {
-                setLoading(true); // Start loading
-    
-                if (session.info.webId) {
-                    // let locations = await getLocations(session.info.webId) as Marker[];
-                    let locations:Marker[] = [];
-         
-                    let friends = await getFriendsID(session.info.webId);
-                    console.log(friends);
-                    for (let friend of friends) {
-                        let friendLocations = await getLocations(friend) as Marker[];
-
-                        locations = locations.concat(friendLocations);
-
-                    }
-                    setMarkers(locations);
-                    setFilteredMarkers(locations);
-                    console.log(locations);
-                }
-            } catch (error) {
-                console.log('Error loading locations:', error);
-            } finally {
-                setLoading(false); // Stop loading
-            }
-        }
-    }, [session.info.webId]);
+        
+        clearFilters();
+    }, );
 
 
 
