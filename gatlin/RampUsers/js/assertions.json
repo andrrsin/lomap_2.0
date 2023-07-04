@@ -1,0 +1,10 @@
+{
+  "simulation": "lomap.UserList1",
+  "simulationId": "userlist1-20230703154122071",
+  "start": 1688398883184,
+  "description": "",
+  "scenarios": ["UserList1"],
+  "assertions": [
+
+  ]
+}
