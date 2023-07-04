@@ -55,9 +55,9 @@ const GoogleMapComponent: React.FC = () => {
                     console.log(friends);
                     for (let friend of friends) {
                         let friendLocations = await getLocations(friend) as Marker[];
-                        console.log(friendLocations);
+
                         locations = locations.concat(friendLocations);
-                        console.log(locations);
+
                     }
                     setMarkers(locations);
                     setFilteredMarkers(locations);
@@ -80,7 +80,7 @@ const GoogleMapComponent: React.FC = () => {
         handleRedirectAfterLogin();
         async function handleRedirectAfterLogin() {
             await session.handleIncomingRedirect(window.location.href);
-            console.log(session.info);
+
             if (!session.info.isLoggedIn) {
                 navigate("/login"); //desactivar when testing
             }

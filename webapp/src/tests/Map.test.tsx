@@ -5,6 +5,7 @@ import GoogleMapComponent from '../components/map/map';
 import { wait } from '@testing-library/user-event/dist/utils';
 import App from '../App';
 import ButtonMenu from '../components/buttonMenu/buttonMenu';
+import Login from '../pages/Login';
 
 
 test('renders app', async() => {
@@ -17,13 +18,18 @@ test('renders app', async() => {
 
 
   test('logs out when Logout button is clicked', async () => {
-    render(<ButtonMenu handleProfileToggle={jest.fn()} profileOpen={false} logout={jest.fn()}/>);
+    let logout = jest.fn();
+    logout.mockImplementation(() => {
+      render(<Login />);
+    });
+
+    render(<ButtonMenu handleProfileToggle={jest.fn()} profileOpen={false} logout={logout}/>);
     await waitFor(() => {
     const logoutButton = screen.getByTestId('logout-button');
     userEvent.click(logoutButton);
     });
 
-    expect(global.window.location.pathname).toContain('/login');
+    await waitFor(() => expect(screen.getByText('Login')).toBeInTheDocument());
   });
 
   // You can add more tests for other functionalities as needed

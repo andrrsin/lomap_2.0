@@ -55,7 +55,7 @@ export async function getLocation(locationPath:any): Promise<Marker|null>{
 
 export async function getLocations(webID:string) {
   let baseURL = webID.split("profile")[0]; // url of the type https://<nombreusuario>.provider/
-  let inventoryFolder = `${baseURL}private/lomap/inventory/index.ttl`; // locations contained in index.ttl 
+  let inventoryFolder = `${baseURL}private/lomapBITS/inventory/index.ttl`; // locations contained in index.ttl 
  
   let locationPaths; 
   try{
@@ -150,7 +150,7 @@ export async function getLocationImage(imagesFolderUrl:string){
 
 export async function createLocation(webID:string, location:Marker) {
   let baseURL = webID.split("profile")[0]; // url of the type https://<nombre>.inrupt.net/
-  let locationsFolder = `${baseURL}private/lomap/inventory/index.ttl`; // inventory folder path
+  let locationsFolder = `${baseURL}private/lomapBITS/inventory/index.ttl`; // inventory folder path
   let locationId;
   // add location to inventory
   try {
@@ -161,8 +161,8 @@ export async function createLocation(webID:string, location:Marker) {
   }
 
   // path for the new location dataset
-  let individualLocationFolder = `${baseURL}private/lomap/locations/${locationId}/index.ttl`
-  let folder = `${baseURL}private/lomap/locations/${locationId}`
+  let individualLocationFolder = `${baseURL}private/lomapBITS/locations/${locationId}/index.ttl`
+  let folder = `${baseURL}private/lomapBITS/locations/${locationId}`
   // create dataset for the location
   try {
     await createLocationDataSet(folder,individualLocationFolder, location, locationId as string)
@@ -176,7 +176,7 @@ export async function addLocationToInventory(locationsFolder:string, location:Ma
   let inventory = await getSolidDataset(locationsFolder, {fetch: fetch}) // get the inventory
   let locationId = "LOC_" + uuid(); // create location uuid
   let baseURL = locationsFolder.split("private")[0]
-  let locationURL = `${baseURL}private/lomap/locations/${locationId}/index.ttl#${locationId}` // create location dataset path
+  let locationURL = `${baseURL}private/lomapBITS/locations/${locationId}/index.ttl#${locationId}` // create location dataset path
 
   let newLocation = buildThing(createThing({name: locationId}))
     .addStringNoLocale(SCHEMA_INRUPT.identifier, locationURL) // add to the thing the path of the location dataset
@@ -195,7 +195,7 @@ export async function addLocationToInventory(locationsFolder:string, location:Ma
 export async function createInventory(locationsFolder: string, location:Marker){
   let locationId = "LOC_" + uuid(); // location uuid
   let baseURL = locationsFolder.split("private")[0]
-  let locationURL = `${baseURL}private/lomap/locations/${locationId}/index.ttl#${locationId}` // location dataset path
+  let locationURL = `${baseURL}private/lomapBITS/locations/${locationId}/index.ttl#${locationId}` // location dataset path
 
   let inventory = createSolidDataset() // create dataset for the inventory
 
